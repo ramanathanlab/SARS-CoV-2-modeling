@@ -160,7 +160,7 @@ def traj_to_dset(
     # Get box dimensions
     box = sim.atoms.dimensions
 
-    rmsds, rows, cols, positions = [], [], [], []
+    rmsds, rows, cols, point_clouds = [], [], [], []
 
     for i, _ in enumerate(sim.trajectory[::skip_every]):
 
@@ -179,7 +179,7 @@ def traj_to_dset(
         )
 
         # Store reference atoms point cloud of current frame
-        positions.append(positions.copy())
+        point_clouds.append(positions.copy())
 
         if verbose:
             if i % print_every == 0:
@@ -189,15 +189,15 @@ def traj_to_dset(
                 msg += f"\trow shape: {rows[-1].shape}"
                 print(msg)
 
-    positions = np.transpose(positions, [0, 2, 1])
+    point_clouds = np.transpose(point_clouds, [0, 2, 1])
 
     if save_file:
-        write_h5(save_file, rmsds, rows, cols, positions)
+        write_h5(save_file, rmsds, rows, cols, point_clouds)
 
     if verbose:
         print(f"Duration {time.time() - start_time}s")
 
-    return rmsds, rows, cols, positions
+    return rmsds, rows, cols, point_clouds
 
 
 def parse_args() -> argparse.Namespace:
