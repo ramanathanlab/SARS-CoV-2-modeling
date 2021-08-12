@@ -92,4 +92,5 @@ def parse_args() -> argparse.Namespace:
 if __name__ == "__main__":
     args = parse_args()
     input_file_names = glob.glob(args.input_files_glob)
+    print("Concatenating:", input_file_names)
     concatenate_h5(input_file_names, args.output_name)
